@@ -1,0 +1,53 @@
+
+#Antes de executar o comando abaixo para rodar o CI/CD faça os passos antes.
+
+#Vá para o repositório do GIT HUB e entrar na aba Setting(Simbolo de uma engrenagem), 
+#vai precisar ou criar/ajusrar o "Secrets and Variables" -> Action.
+#Essa são as variáveis abaixo:
+#"SNOWSQL_ACCOUNT" = ID DA CONTA DO SNOWFLAKE
+#"SNOWSQL_PWD" = SENHA DA CONTA DO SNOWFLAKE
+#"SNOWSQL_USER" USER DA CONTA DO SNOWFLAKE
+
+
+#Para se conectar pelo git hug diretamente pelo VSCODE
+#cd C:\Users\igorc\poc-snow
+
+
+#exemplo do comando 
+#snowflake -a DRDKZHF- -u arrudaconsulting -d POC -w COMPUTE_WH -s DEV -f sql/DDL/bronze/bronze_customers.sql
+
+
+#Após configurado conforme a instrução anterior, executar o comando abaixo e depois colocar o password do snowflake
+
+snowsql -a ZW33833 -u IGORCORREA -d POC -w COMPUTE_WH -s DEV -f sql/DDL/bronze/bronze_customers.sql
+
+
+## Nome usuário => snowflake 
+
+## ID da conta => -a DRDKZHF-
+
+## Usuário do Snowflake => -u arrudaconsulting
+
+## Nome do banco de dados => -d POC
+
+## Nome do Data Warehouse do Snowflake => -w COMPUTE_WH
+
+## Nome do Schema => -s DEV
+
+## Nome do arquivo/caminho => -f sql/DDL/bronze/bronze_customers.sql
+
+
+## comando abaixo para descobrir as informaçõse solicitadas acima.####
+
+
+# --nome do usuário conectado no snowflake
+# SELECT CURRENT_USER();
+
+# --ID da contaLECT CURRENT_ACCOUNT();
+# SELECT CURRENT_ACCOUNT();
+
+# -- lista os usuários existentes na conta
+# SHOW USERS;
+
+# -- Lista o usuário conectado nesta conta atual
+# DESC USER IGORCORREA;
