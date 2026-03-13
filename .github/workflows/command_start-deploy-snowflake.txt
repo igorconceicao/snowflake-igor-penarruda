@@ -19,12 +19,12 @@
 
 #Após configurado conforme a instrução anterior, executar o comando abaixo e depois colocar o password do snowflake
 
-snowsql -a ZW33833.sa-east-1 -u IGORCORREA -d POC -w COMPUTE_WH -s DEV -f sql/DDL/bronze/bronze_customers.sql
+snowsql -a zw33833.sa-east-1.aws -u IGORCORREA -d POC -w COMPUTE_WH -s DEV -f sql/DDL/bronze/bronze_customers.sql
 
 
 ## Nome usuário => snowflake 
 
-## ID da conta => -a DRDKZHF-
+## ID da conta => -a zw33833.sa-east-1.aws
 
 ## Usuário do Snowflake => -u arrudaconsulting
 
@@ -46,14 +46,15 @@ snowsql -a ZW33833.sa-east-1 -u IGORCORREA -d POC -w COMPUTE_WH -s DEV -f sql/DD
 # SELECT CURRENT_USER();
 
 
-# Quando você usa Snowsql moderno, muitas vezes o formato correto é:
+# Quando você usa Snowsql moderno, muitas vezes o formato correto é do SNOWSQL_ACCOUNT(ID DA CONTA):
 
-# <organization>-<account>
+# <account>.<region> 
 
-# --ID da contaLECT CURRENT_ACCOUNT();
-# SELECT CURRENT_ACCOUNT(),
-#       CURRENT_ORGANIZATION_NAME(),
-#      CURRENT_REGION();
+# --ID da conta
+# SELECT CURRENT_ACCOUNT(), => zw33833
+# SELECT SYSTEM$ALLOWLIST(); => .sa-east-1.aws     
+# CURRENT_ORGANIZATION_NAME(),
+# CURRENT_REGION();
 
 
 # -- lista os usuários existentes na conta
