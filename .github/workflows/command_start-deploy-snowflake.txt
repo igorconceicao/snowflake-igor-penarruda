@@ -19,7 +19,7 @@
 
 #Após configurado conforme a instrução anterior, executar o comando abaixo e depois colocar o password do snowflake
 
-snowsql -a ZW33833 -u IGORCORREA -d POC -w COMPUTE_WH -s DEV -f sql/DDL/bronze/bronze_customers.sql
+snowsql -a ZW33833.sa-east-1 -u IGORCORREA -d POC -w COMPUTE_WH -s DEV -f sql/DDL/bronze/bronze_customers.sql
 
 
 ## Nome usuário => snowflake 
@@ -37,14 +37,24 @@ snowsql -a ZW33833 -u IGORCORREA -d POC -w COMPUTE_WH -s DEV -f sql/DDL/bronze/b
 ## Nome do arquivo/caminho => -f sql/DDL/bronze/bronze_customers.sql
 
 
+
+
 ## comando abaixo para descobrir as informaçõse solicitadas acima.####
 
 
 # --nome do usuário conectado no snowflake
 # SELECT CURRENT_USER();
 
+
+# Quando você usa Snowsql moderno, muitas vezes o formato correto é:
+
+# <organization>-<account>
+
 # --ID da contaLECT CURRENT_ACCOUNT();
-# SELECT CURRENT_ACCOUNT();
+# SELECT CURRENT_ACCOUNT(),
+#       CURRENT_ORGANIZATION_NAME(),
+#      CURRENT_REGION();
+
 
 # -- lista os usuários existentes na conta
 # SHOW USERS;
