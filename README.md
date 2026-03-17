@@ -1,53 +1,103 @@
-# Automated Snowflake View Deployment
+# 🚀 Snowflake CI/CD Data Pipeline with AWS S3 and GitHub Actions
 
-## CI/CD with GitHub Actions
+## 📌 Overview
 
-This project uses GitHub Actions to automate the deployment of SQL scripts to different environments in Snowflake:
+This project demonstrates an end-to-end modern data pipeline using:
 
-- **DEV:** Runs scripts in the `DEV` schema on every push to any branch (except `main`).
-- **QA:** Runs scripts in the `QA` schema only after a successful deploy to DEV.
-- **PRD:** Runs scripts in the production schema (defined by the `SCHEMA_PRD` variable) after merging into the `main` branch.
+- AWS S3 for data ingestion
+- Snowflake as the data warehouse
+- GitHub Actions for CI/CD automation
 
-### Pipeline Workflow
-
-1. **Create a development branch.**
-2. **Add or modify `.sql` files and commit/push your changes.**
-3. **The pipeline will automatically execute:**
-   - First in DEV.
-   - If DEV succeeds, then in QA.
-4. **After review, merge into `main` to trigger deployment to PRD.**
-
-### Required Secrets
-
-The following secrets must be configured in your repository settings:
-- `SNOWSQL_ACCOUNT`
-- `SNOWSQL_USER`
-- `SNOWSQL_PWD`
-
-### Running the Pipeline Manually
-
-You can manually trigger the pipeline from the "Actions" tab in GitHub.
-
-### Adding New SQL Scripts
-
-- Add or modify `.sql` files in your repository.
-- On commit and push, the pipeline will detect and execute only the changed `.sql` files.
-
-### Example: Triggering the Pipeline
-
-```sh
-git checkout -b feature/my-new-view
-# Edit or add your .sql files
-git add sql/views/my_new_view.sql
-git commit -m "feat: add my new view script"
-git push origin feature/my-new-view
-```
-
-Open a Pull Request to `main` when ready for production deployment.
+The pipeline follows a Medallion Architecture (Bronze Layer) and implements automated deployment workflows.
 
 ---
 
-**Note:**
-- The pipeline ensures QA only runs after a successful DEV deploy.
-- Production deploys only occur after merging into `main`.
-- All jobs require the Snowflake secrets to be set in the repository.
+## 🏗️ Architecture
+
+AWS S3 → Snowflake External Stage → COPY INTO → Bronze Layer → Procedures → Tasks → CI/CD
+
+---
+
+## ⚙️ Tech Stack
+
+- AWS S3
+- Snowflake
+- GitHub Actions
+- SnowSQL
+- SQL
+
+---
+
+## 📂 Repository Structure
+
+sql/
+├── DDL/bronze/bronze_customers.sql
+├── file_format/parquet_format.sql
+├── procedures/
+├── tasks/
+└── STAGE_PUBLIC_PRA_BRONZE.sql
+
+---
+
+## 🔧 Implementation Steps
+
+### Create File Format
+
+CREATE OR REPLACE FILE FORMAT PARQUET_FORMAT
+TYPE = PARQUET
+COMPRESSION = AUTO;
+
+---
+
+### Create Bronze Table
+
+CREATE TABLE IF NOT EXISTS bronze_customers (
+    raw VARIANT,
+    filename STRING,
+    created_at TIMESTAMP
+);
+
+---
+
+### Load Data
+
+COPY INTO bronze_customers
+FROM(
+   SELECT
+       METADATA$FILENAME,
+       $1,
+       CURRENT_TIMESTAMP 
+    FROM @north/cust
+    (FILE_FORMAT => PARQUET_FORMAT)
+);
+
+---
+
+## 🔐 Snowflake Info
+
+SELECT CURRENT_ACCOUNT();
+SELECT CURRENT_USER();
+SELECT CURRENT_WAREHOUSE();
+SELECT SYSTEM$ALLOWLIST();
+
+---
+
+## 🔁 CI/CD
+
+Secrets:
+
+- SNOWSQL_ACCOUNT
+- SNOWSQL_USER
+- SNOWSQL_PWD
+
+---
+
+## 🚀 Deploy Example
+
+snowsql -a <account.region> -u <user> -d POC -w COMPUTE_WH -s DEV -f sql/DDL/bronze/bronze_customers.sql
+
+---
+
+## 👨‍💻 Author
+
+Igor Conceição
