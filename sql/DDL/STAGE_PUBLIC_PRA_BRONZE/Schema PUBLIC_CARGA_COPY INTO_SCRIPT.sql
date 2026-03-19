@@ -20,7 +20,7 @@ truncate table bronze_customers;
 
 
 -- north é o nome do external stage que acessar os arquivo do S3 na AWS.
--- COPY INTO não repe o processamento do mesmo arquivo da dados, por isso ele somento só dará carga na tabela bronze_customers somente uma vez.
+-- COPY INTO não reprocessar o processamento do mesmo arquivo da dados, por isso ele somento só dará carga na tabela bronze_customers somente uma vez.
 -- COPY INTO tem uma tabela interna que valida qual arquivo e qual linha já foi processado ou não.
 
 COPY INTO bronze_customers
